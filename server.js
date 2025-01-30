@@ -57,6 +57,7 @@ app.get("/callback", async (req, res) => {
 // 🔹 Step 3: Fetch User's Spotify Profile
 app.get("/me", async (req, res) => {
     const accessToken = req.headers.authorization;
+    console.log("Access token being used:", accessToken);
 
     if (!accessToken) {
         console.error("Access token missing in headers:", req.headers);
