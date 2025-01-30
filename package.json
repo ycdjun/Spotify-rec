@@ -17,5 +17,11 @@
   "bugs": {
     "url": "https://github.com/ycdjun/Spotify-rec/issues"
   },
-  "homepage": "https://github.com/ycdjun/Spotify-rec#readme"
+  "homepage": "https://github.com/ycdjun/Spotify-rec#readme",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
 }
