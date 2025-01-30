@@ -11,12 +11,12 @@ app.use(express.json());
 const PORT = process.env.PORT || 4000;
 
 // Spotify API Credentials (Hidden on Backend)
-const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
-const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || "default_client_id";
+const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || "default_client_secret";
 const REDIRECT_URI = "https://ycdjun.github.io/SpotifyRecFrontEnd"; // Update this to your frontend deployment URL
 
 // OpenAI API Key (Hidden on Backend)
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "default_openai_key";
 
 // 🔹 Step 1: Redirect User to Spotify for Login
 app.get("/login", (req, res) => {
@@ -49,6 +49,7 @@ app.get("/callback", async (req, res) => {
 
         res.json(tokenResponse.data); // Return access_token to frontend
     } catch (error) {
+        console.error("Error exchanging code for token:", error);
         res.status(500).json({ error: "Failed to retrieve access token" });
     }
 });
@@ -58,6 +59,7 @@ app.get("/me", async (req, res) => {
     const accessToken = req.headers.authorization;
 
     if (!accessToken) {
+        console.error("Access token missing in headers:", req.headers);
         return res.status(401).json({ error: "Missing access token" });
     }
 
@@ -67,6 +69,7 @@ app.get("/me", async (req, res) => {
         });
         res.json(userProfile.data);
     } catch (error) {
+        console.error("Error fetching user profile:", error.response ? error.response.data : error.message);
         res.status(500).json({ error: "Failed to fetch user profile" });
     }
 });
@@ -86,6 +89,7 @@ app.get("/spotify-auth", async (req, res) => {
         );
         res.json(response.data);
     } catch (error) {
+        console.error("Error during Spotify client credentials auth:", error.response ? error.response.data : error.message);
         res.status(500).json({ error: "Failed to authenticate with Spotify" });
     }
 });
@@ -109,6 +113,7 @@ app.post("/generate-playlist", async (req, res) => {
 
         res.json({ recommendations: response.data.choices[0].message.content.split("\n") });
     } catch (error) {
+        console.error("Error generating playlist:", error.response ? error.response.data : error.message);
         res.status(500).json({ error: "Failed to generate playlist" });
     }
 });
