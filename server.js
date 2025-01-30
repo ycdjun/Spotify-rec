@@ -13,7 +13,8 @@ const PORT = process.env.PORT || 4000;
 // Spotify API Credentials (Hidden on Backend)
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || "default_client_id";
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || "default_client_secret";
-const REDIRECT_URI = "https://ycdjun.github.io/SpotifyRecFrontEnd"; // Update this to your frontend deployment URL
+const REDIRECT_URI1 = "https://spotify-rec-axk8.onrender.com/callback";
+const REDIRECT_URI2 = "https://ycdjun.github.io/SpotifyRecFrontEnd"; // Update this to your frontend deployment URL
 
 // OpenAI API Key (Hidden on Backend)
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "default_openai_key";
@@ -25,7 +26,7 @@ app.get("/login", (req, res) => {
         response_type: "code",
         client_id: SPOTIFY_CLIENT_ID,
         scope: scope,
-        redirect_uri: REDIRECT_URI,
+        redirect_uri: REDIRECT_URI1,
     })}`;
     res.redirect(authURL);
 });
@@ -42,7 +43,7 @@ app.get("/callback", async (req, res) => {
         const tokenResponse = await axios.post("https://accounts.spotify.com/api/token", querystring.stringify({
             grant_type: "authorization_code",
             code: code,
-            redirect_uri: REDIRECT_URI,
+            redirect_uri: REDIRECT_URI2,
             client_id: SPOTIFY_CLIENT_ID,
             client_secret: SPOTIFY_CLIENT_SECRET,
         }), { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
